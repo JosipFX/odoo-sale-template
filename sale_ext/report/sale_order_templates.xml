@@ -19,13 +19,13 @@
                             <tr>
                                 <td style="padding-left:10px;">Datum:</td>
                                 <td style="text-align:right;padding-right:10px;">
-                                    <span t-esc="doc.date_order"/>
+                                    <span t-field="doc.date_order" t-options='{"format": "dd.MM.yyyy"}'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding-left:10px;">Fälligkeitsdatum:</td>
                                 <td style="text-align:right;padding-right:10px;">
-                                    <span t-esc="doc.date_order"/>
+                                    <span t-field="doc.date_order" t-options='{"format": "dd.MM.yyyy"}'/>
                                 </td>
                             </tr>
                             <tr>
