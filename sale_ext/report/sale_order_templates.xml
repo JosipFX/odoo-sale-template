@@ -125,7 +125,18 @@
                                         <span t-esc="line.product_id.default_code"/>
                                     </td>
                                     <td name="account_invoice_line_name">
-                                        <span t-field="line.name" t-options="{'widget': 'text'}"/>
+                                        <t t-if="line.name">
+                                            <!-- Split the name by brackets and take only the text part -->
+                                            <t t-set="name_parts" t-value="line.name.split(']')"/>
+                                            <!-- Split description into lines -->
+                                            <t t-set="description_lines" t-value="name_parts[-1].strip().split('\n')"/>
+                                            <!-- First line bold -->
+                                            <strong t-esc="description_lines[0]"/><br t-if="len(description_lines) > 1"/>
+                                            <!-- Remaining lines normal -->
+                                            <t t-foreach="description_lines[1:]" t-as="desc_line">
+                                                <span t-esc="desc_line"/><br t-if="not desc_line_last"/>
+                                            </t>
+                                        </t>
                                     </td>
                                     <td name="td_quantity" class="text-end">
                                         <span t-field="line.product_uom_qty">3.00</span>
