@@ -206,7 +206,7 @@
             <xpath expr="//div[@name='comment']" position="replace">
             </xpath>
 
-            <xpath expr="//div[@class='mt-5 clearfix']"
+            <!-- <xpath expr="//div[@class='mt-5 clearfix']"
                    position="after">
 
                 <table width="100%" style="border:2px solid white;">
@@ -256,7 +256,7 @@
                     </tr>
 
                 </table>
-            </xpath>
+            </xpath> -->
             <xpath expr="//p[@name='payment_communication']" position="replace">
             </xpath>
         </template>
