@@ -23,7 +23,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding-left:10px;">Fälligkeitsdatum:</td>
+                                <td style="padding-left:10px;">Gültigkeitsdatum:</td>
                                 <td style="text-align:right;padding-right:10px;">
                                     <span t-field="doc.validity_date" t-options='{"format": "dd.MM.yyyy"}'/>
                                 </td>
