@@ -2,90 +2,86 @@
 <odoo>
 <template id="report_saleorder_document_new">
     <t t-call="web.external_layout">
-        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+        <div style="font-size: 0.9em;">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
 
-        <div class="row" style="margin-top:-45px;">
-                    <div class="col-7"/>
-                    <div class="col-5">
-                         <p style="font-size:13px;">
-                            <u>Herr Informatik GmbH, Klosterzelgstrasse 1a, 5210 Windisch</u>
-                        </p>
+            <div class="row" style="margin-top:-45px;">
+                <div class="col-7"/>
+                <div class="col-5">
+                    <p style="font-size:12px;">
+                        <u>Herr Informatik GmbH, Klosterzelgstrasse 1a, 5210 Windisch</u>
+                    </p>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-5">
+                    <table width="100%" class="table-borderless" style="border:1px solid black;">
+                        <tr>
+                            <td style="padding-left:10px;">Datum:</td>
+                            <td style="text-align:right;padding-right:10px;">
+                                <span t-field="doc.date_order" t-options='{"format": "dd.MM.yyyy"}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left:10px;">Gültigkeitsdatum:</td>
+                            <td style="text-align:right;padding-right:10px;">
+                                <span t-field="doc.validity_date" t-options='{"format": "dd.MM.yyyy"}'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left:10px;">Kunden-Nr.:</td>
+                            <td style="text-align:right;padding-right:10px;">
+                                <span t-esc="doc.partner_id.id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left:10px;">Bearbeiter:</td>
+                            <td style="text-align:right;padding-right:10px;">
+                                <span t-field="doc.user_id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left:10px;">MWSt-Nr.:</td>
+                            <td style="text-align:right;padding-right:10px;">
+                                <span t-esc="doc.company_id.vat"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5" name="address_not_same_as_shipping">
+                    <address class="mb-0" t-field="doc.partner_id"
+                             t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                    <div t-if="doc.partner_id.vat" id="partner_vat_address_not_same_as_shipping">
+                        <t t-if="doc.company_id.account_fiscal_country_id.vat_label"
+                           t-out="doc.company_id.account_fiscal_country_id.vat_label" id="inv_tax_id_label"/>
                     </div>
                 </div>
-                <br/>
-                <div class="row">
-                    <div class="col-5">
-                        <table width="100%" class="table-borderless" style="border:1px solid black;">
-                            <tr>
-                                <td style="padding-left:10px;">Datum:</td>
-                                <td style="text-align:right;padding-right:10px;">
-                                    <span t-field="doc.date_order" t-options='{"format": "dd.MM.yyyy"}'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding-left:10px;">Gültigkeitsdatum:</td>
-                                <td style="text-align:right;padding-right:10px;">
-                                    <span t-field="doc.validity_date" t-options='{"format": "dd.MM.yyyy"}'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding-left:10px;">Kunden-Nr.:</td>
-                                <td style="text-align:right;padding-right:10px;">
-                                    <span t-esc="doc.partner_id.id"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding-left:10px;">Bearbeiter:</td>
-                                <td style="text-align:right;padding-right:10px;">
-                                    <span t-field="doc.user_id"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding-left:10px;">MWSt-Nr.:</td>
-                                <td style="text-align:right;padding-right:10px;">
-                                    <span t-esc="doc.company_id.vat"/>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-2"></div>
-                    <div class="col-5" name="address_not_same_as_shipping">
-                        <address class="mb-0" t-field="doc.partner_id"
-                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
-                        <div t-if="doc.partner_id.vat" id="partner_vat_address_not_same_as_shipping">
-                            <t t-if="doc.company_id.account_fiscal_country_id.vat_label"
-                               t-out="doc.company_id.account_fiscal_country_id.vat_label" id="inv_tax_id_label"/>
-                        </div>
-                    </div>
+            </div>
 
-                </div>
+            <div class="page">
+                <div class="oe_structure"/>
 
-        <div class="page">
-            <div class="oe_structure"/>
+                <h4 style="color:black; margin-top: 50px; font-size: 1.1em;">
+                    <span t-if="env.context.get('proforma', False) or is_pro_forma">Pro-Forma Invoice # </span>
+                    <span t-elif="doc.state in ['draft','sent']">Offerte # </span>
+                    <span t-else="">Auftragsbestätigung # </span>
+                    <span t-field="doc.name">SO0000</span>
+                    <span> - </span>
+                    <span t-esc="doc.title"/>
+                </h4>
 
-            <h4 style="color:black; margin-top: 50px">
-                <span t-if="env.context.get('proforma', False) or is_pro_forma">Pro-Forma Invoice # </span>
-                <span t-elif="doc.state in ['draft','sent']">Offerte # </span>
-                <span t-else="">Auftragsbestätigung # </span>
-                <span t-field="doc.name">SO0000</span>
-                <span> - </span>
-                <span t-esc="doc.title"/>
-            </h4>
+                <!-- Is there a discount on at least one line? -->
+                <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()"/>
+                <t t-set="display_discount" t-value="any(l.discount for l in lines_to_report)"/>
 
-            <!-- Is there a discount on at least one line? -->
-            <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()"/>
-            <t t-set="display_discount" t-value="any(l.discount for l in lines_to_report)"/>
-
-            <div class="oe_structure"></div>
-            <table  class="table table-sm o_main_table table-borderless" name="invoice_line_table">
+                <div class="oe_structure"></div>
+                <table class="table table-sm o_main_table table-borderless" name="invoice_line_table">
                     <thead>
                         <tr style="border-bottom:1px solid black;">
-                            <th>
-                                <span>Pos.</span>
-                            </th>
-                            <th>
-                                <span>Artikel Nr.</span>
-                             </th>
+                            <th><span>Pos.</span></th>
+                            <th><span>Artikel Nr.</span></th>
                             <th name="th_description" class="text-start">
                                 <span>Bezeichnung</span>
                             </th>
@@ -110,7 +106,6 @@
                         <t t-set="current_total" t-value="0"/>
                         <t t-set="sr" t-value="0"/>
 
-<!--                        <t t-foreach="lines_to_report" t-as="line">-->
                         <t t-foreach="doc.order_line" t-as="line">
                             <t t-set="sr" t-value="sr+1"/>
                             <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
@@ -126,13 +121,9 @@
                                     </td>
                                     <td name="account_invoice_line_name">
                                         <t t-if="line.name">
-                                            <!-- Split the name by brackets and take only the text part -->
                                             <t t-set="name_parts" t-value="line.name.split(']')"/>
-                                            <!-- Split description into lines -->
                                             <t t-set="description_lines" t-value="name_parts[-1].strip().split('\n')"/>
-                                            <!-- First line bold -->
                                             <strong t-esc="description_lines[0]"/><br t-if="len(description_lines) > 1"/>
-                                            <!-- Remaining lines normal -->
                                             <t t-foreach="description_lines[1:]" t-as="desc_line">
                                                 <span t-esc="desc_line"/><br t-if="not desc_line_last"/>
                                             </t>
@@ -185,40 +176,43 @@
                         </t>
                     </tbody>
                 </table>
-            <div class="clearfix" name="so_total_summary">
-                <div id="total" class="row" name="total">
-                    <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
-                        <table class="table table-sm table-borderless">
-                            <!-- Tax totals -->
-                            <t t-set="tax_totals" t-value="doc.tax_totals"/>
-                            <t t-call="sale.document_tax_totals"/>
-                        </table>
+                <div class="clearfix" name="so_total_summary">
+                    <div id="total" class="row" name="total">
+                        <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
+                            <table class="table table-sm table-borderless">
+                                <!-- Tax totals -->
+                                <t t-set="tax_totals" t-value="doc.tax_totals"/>
+                                <t t-call="sale.document_tax_totals"/>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="oe_structure"></div>
+                <div class="oe_structure"></div>
 
-            <div t-if="not doc.signature" class="oe_structure"></div>
-            <div t-else="" class="mt-4 ml64 mr4" name="signature">
-                <div class="offset-8">
-                    <strong>Signature</strong>
+                <div t-if="not doc.signature" class="oe_structure"></div>
+                <div t-else="" class="mt-4 ml64 mr4" name="signature">
+                    <div class="offset-8">
+                        <strong>Signature</strong>
+                    </div>
+                    <div class="offset-8">
+                        <img t-att-src="image_data_uri(doc.signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                    </div>
+                    <div class="offset-8 text-center">
+                        <span t-field="doc.signed_by">Oscar Morgan</span>
+                    </div>
                 </div>
-                <div class="offset-8">
-                    <img t-att-src="image_data_uri(doc.signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                <div>
+                    <!-- 
+                    <p t-if="not is_html_empty(doc.payment_term_id.note)">
+                        <span t-field="doc.payment_term_id.note">The payment should also be transmitted with love</span>
+                    </p>
+                    -->
+                    <p t-if="doc.fiscal_position_id and not is_html_empty(doc.fiscal_position_id.sudo().note)"
+                        id="fiscal_position_remark">
+                        <strong>Fiscal Position Remark:</strong>
+                        <span t-field="doc.fiscal_position_id.sudo().note">No further requirements for this payment</span>
+                    </p>
                 </div>
-                <div class="offset-8 text-center">
-                    <span t-field="doc.signed_by">Oscar Morgan</span>
-                </div>
-            </div>
-            <div>
-                <p t-if="not is_html_empty(doc.payment_term_id.note)">
-                    <span t-field="doc.payment_term_id.note">The payment should also be transmitted with love</span>
-                </p>
-                <p t-if="doc.fiscal_position_id and not is_html_empty(doc.fiscal_position_id.sudo().note)"
-                    id="fiscal_position_remark">
-                    <strong>Fiscal Position Remark:</strong>
-                    <span t-field="doc.fiscal_position_id.sudo().note">No further requirements for this payment</span>
-                </p>
             </div>
         </div>
     </t>
@@ -235,6 +229,5 @@
 <template id="report_saleorder_new">
     <t t-call="sale_ext.report_saleorder_raw_new"/>
 </template>
-
 
 </odoo>
