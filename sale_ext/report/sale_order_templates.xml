@@ -167,7 +167,7 @@
                                 <tr style="border-bottom: 1px solid black;">
                                     <td></td> <!-- Empty for position number -->
                                     <td></td> <!-- Empty for product code -->
-                                    <td colspan="5" style="padding-left: 15px; font-style: italic;"> 
+                                    <td colspan="5"> 
                                         <!-- Get clean description without product code prefixes -->
                                         <t t-set="description" t-value="line.name"/>
                                         <t t-if="']' in description">
