@@ -58,28 +58,20 @@
                             <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
                             <t t-set="current_total" t-value="current_total + line.price_total"/>
                             
-                            <!-- Process description lines once -->
-                            <t t-set="has_description" t-value="False"/>
-                            <t t-set="first_line" t-value="''"/>
-                            <t t-set="other_lines" t-value="[]"/>
-                            
-                            <t t-if="line.display_type == 'product' and line.name">
-                                <t t-set="has_description" t-value="True"/>
-                                <t t-set="name_parts" t-value="line.name.split(']')"/>
-                                <t t-set="clean_desc" t-value="name_parts[-1].strip()"/>
-                                <t t-set="desc_lines" t-value="clean_desc.split('\n')"/>
-                                <t t-set="first_line" t-value="desc_lines[0] if desc_lines else ''"/>
-                                <t t-set="other_lines" t-value="desc_lines[1:] if len(desc_lines) > 1 else []"/>
-                            </t>
-                            
-                            <!-- First row with main product info -->
+                            <!-- Main row with product info -->
                             <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''" 
-                                t-att-style="'border-bottom:' + ('0' if (line.display_type == 'product' and other_lines) else '1px solid black')">
+                                style="border-bottom: 0;">
                                 <t t-if="line.display_type == 'product'" name="account_invoice_line_accountable">
                                     <td><span t-esc="sr"/></td>
                                     <td class="text-center"><span t-esc="line.product_id.default_code"/></td>
                                     <td name="account_invoice_line_name">
-                                        <strong t-if="first_line" t-esc="first_line"/>
+                                        <!-- Only show product name in first row, not the full description -->
+                                        <t t-if="line.product_id">
+                                            <strong t-field="line.product_id.name"/>
+                                        </t>
+                                        <t t-else="">
+                                            <strong t-esc="line.name.split('\n')[0] if line.name else ''"/>
+                                        </t>
                                     </td>
                                     <td name="td_quantity" class="text-end">
                                         <span t-field="line.quantity"/>
@@ -109,14 +101,24 @@
                                 </t>
                             </tr>
                             
-                            <!-- Second row for extended description -->
-                            <t t-if="line.display_type == 'product' and other_lines">
-                                <tr style="border-bottom:1px solid black;">
+                            <!-- Separate row for description - always show for product lines with a name -->
+                            <t t-if="line.display_type == 'product' and line.name">
+                                <tr style="border-bottom: 1px solid black;">
                                     <td></td> <!-- Empty for position number -->
                                     <td></td> <!-- Empty for product code -->
                                     <td colspan="5" style="padding-left: 15px; font-style: italic;"> 
-                                        <t t-foreach="other_lines" t-as="desc_line">
-                                            <span t-esc="desc_line"/><br t-if="not desc_line_last"/>
+                                        <!-- Get clean description without product code prefixes -->
+                                        <t t-set="description" t-value="line.name"/>
+                                        <t t-if="']' in description">
+                                            <t t-set="description" t-value="line.name.split(']', 1)[1].strip()"/>
+                                        </t>
+                                        
+                                        <!-- Show full description, skipping first line if it's the product name -->
+                                        <t t-set="desc_lines" t-value="description.split('\n')"/>
+                                        <t t-foreach="desc_lines" t-as="desc_line">
+                                            <t t-if="desc_line.strip()">
+                                                <span t-esc="desc_line"/><br t-if="not desc_line_last"/>
+                                            </t>
                                         </t>
                                     </td>
                                 </tr>
