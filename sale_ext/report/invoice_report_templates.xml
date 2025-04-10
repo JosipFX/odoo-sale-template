@@ -120,6 +120,13 @@
                                                 <span t-esc="desc_line"/><br t-if="not desc_line_last"/>
                                             </t>
                                         </t>
+                                        
+                                        <!-- Show product image if available -->
+                                        <t t-if="line.product_id and line.product_id.image_1920">
+                                            <div style="margin-top: 5px;">
+                                                <img t-att-src="image_data_uri(line.product_id.image_1920)" style="max-width: 150px; max-height: 150px;"/>
+                                            </div>
+                                        </t>
                                     </td>
                                 </tr>
                             </t>
