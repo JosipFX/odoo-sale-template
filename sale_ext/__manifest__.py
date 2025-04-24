@@ -6,15 +6,12 @@
         2: Custom Sale Quotation report
     ''',
     'category': 'Sale',
-    'version': '17.0',
-    'author': 'dezign_engineer',
-    'company': 'dezign_engineer',
-    'website': "https://www.fiverr.com/dezign_engineer",
+    'version': '18.0.1.0.0',
+    'author': 'dezign_engineer, simpit GmbH',
+    'company': 'dezign_engineer, simpit GmbH',
+    'website': "https://www.fiverr.com/dezign_engineer, https://simpit.ch",
     'depends': ['base', 'sale', 'account', 'sale_management'],
     'data': [
-
-        'security/ir.model.access.csv',
-
         'report/web_layout.xml',
         'report/sale_order_templates.xml',
         'report/ir_actions_report.xml',

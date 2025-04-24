@@ -18,7 +18,7 @@
             </t>
         </xpath>
         <!-- report footer -->
-        <xpath expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']" position="replace">
+        <xpath expr="//div[contains(@t-attf-class, 'footer') and contains(@t-attf-class, 'o_company_#{company.id}_layout')]" position="replace">
             <div class="footer" style="font-size: 0.9em;">
                 <div class="row" style="height:70px;"/>
                 <table width="100%" class="table-borderless">
