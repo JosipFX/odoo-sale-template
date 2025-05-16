@@ -7,9 +7,9 @@
     ''',
     'category': 'Sale',
     'version': '18.0.1.0.0',
-    'author': 'dezign_engineer, simpit GmbH',
-    'company': 'dezign_engineer, simpit GmbH',
-    'website': "https://www.fiverr.com/dezign_engineer, https://simpit.ch",
+    'author': 'Josip & simpit GmbH',
+    'company': 'Herr Inf & simpit GmbH',
+    'website': "https://simpit.ch",
     'depends': ['base', 'sale', 'account', 'sale_management'],
     'data': [
         'report/web_layout.xml',
