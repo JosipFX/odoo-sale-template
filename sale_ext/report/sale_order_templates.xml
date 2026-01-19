@@ -252,6 +252,11 @@
                         <span t-field="doc.fiscal_position_id.sudo().note"/>
                     </p>
                 </div>
+                <div class="row">
+                    <div class="col-12 text-center" style="font-size: 0.8em; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">
+                        Hier finden Sie unsere Allgemeinen Geschäftsbedingungen: <span style="text-decoration: underline;">https://erp.rzcloud.ch/terms</span>
+                    </div>
+                </div>
             </div>
         </div>
     </t>

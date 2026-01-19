@@ -211,6 +211,14 @@
             <xpath expr="//p[@name='payment_communication']" position="replace">
             </xpath>
             
+            <xpath expr="//div[hasclass('page')]" position="inside">
+                <div class="row">
+                    <div class="col-12 text-center" style="font-size: 0.8em; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">
+                        Hier finden Sie unsere Allgemeinen Geschäftsbedingungen: <span style="text-decoration: underline;">https://erp.rzcloud.ch/terms</span>
+                    </div>
+                </div>
+            </xpath>
+
         </template>
         
         <template id="document_tax_totals_template_inherit" inherit_id="account.document_tax_totals_template">

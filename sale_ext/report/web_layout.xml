@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- STANDARD Layout -->
-    <!-- Inherited the standard external layout for changing company address position -->
     <template id="custom_standard_external_layout" inherit_id="web.external_layout_standard">
-        <!-- Report header -->
         <xpath expr="//div[1]" position="replace">
             <t t-foreach="docs" t-as="o">
                 <div class="header">
@@ -12,12 +9,10 @@
                             <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"
                                 style="height:73px;width:370px;margin-bottom:5px;"/>
                         </div>
-                        <div class="col-6"/>  <!-- Empty div to maintain left alignment -->
-                    </div>
+                        <div class="col-6"/>  </div>
                 </div>
             </t>
         </xpath>
-        <!-- report footer -->
         <xpath expr="//div[contains(@t-attf-class, 'footer') and contains(@t-attf-class, 'o_company_#{company.id}_layout')]" position="replace">
             <div class="footer" style="font-size: 0.9em;">
                 <div class="row" style="height:70px;"/>
@@ -40,6 +35,13 @@
                         <td width="30%" style="text-align:right;">E-Mail admin@herr-informatik.ch</td>
                     </tr>
                 </table>
+                
+                <div class="row">
+                    <div class="col-12 text-center" style="margin-top: 10px; font-size: 0.8em;">
+                        Hier finden Sie unsere Allgemeinen Geschäftsbedingungen: <span style="text-decoration: underline;">https://erp.rzcloud.ch/terms</span>
+                    </div>
+                </div>
+                
             </div>
         </xpath>
     </template>
