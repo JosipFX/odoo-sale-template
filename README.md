@@ -46,6 +46,39 @@ sale_ext/
 - Der Offerten-Report druckt `doc.title` (in diesem Modul definiert). Die Rechnung druckt `o.x_studio_titel` – ein **Odoo-Studio-Feld an `account.move`, das nicht in diesem Repo definiert ist**.
 - Firmenangaben (Adresse, Telefon, AGB-URL `https://erp.rzcloud.ch/terms`) sind in `web_layout.xml`, `sale_order_templates.xml` und `invoice_report_templates.xml` **dupliziert** – bei Änderungen alle drei anpassen.
 
+## Deployment / Server
+
+Die Applikation läuft on-premise auf dem Linux-Server **`srvodoov06`** (Odoo 18, `.deb`-Installation).
+
+| Was | Pfad / Wert |
+|-----|-------------|
+| Live-Instanz | `https://erp.rzcloud.ch` |
+| Odoo-Config | `/etc/odoo/odoo.conf` (kein expliziter `addons_path` → Default) |
+| Modul auf dem Server | `/usr/lib/python3/dist-packages/odoo/addons/sale_ext` |
+| Besitzer der Modul-Dateien | `manager:manager` |
+| systemd-Dienst | `odoo` (`systemctl restart odoo`) |
+
+> **Achtung:** Das Modul liegt im Core-Addons-Verzeichnis des Odoo-`.deb`-Pakets. Ein `apt`-Update von Odoo kann diesen Ordner überschreiben. Das Repo wurde dort historisch direkt über das Core-Verzeichnis geklont (verwaistes `.git` in `.../odoo/addons`) — Updates daher **nicht** per `git pull` an Ort und Stelle, sondern wie unten beschrieben.
+
+### Update einspielen
+
+```bash
+# 1. Repo frisch in temp-Ordner klonen
+git clone https://github.com/JosipFX/odoo-sale-template.git /tmp/sale_ext_update
+
+# 2. Nur das Modul ersetzen
+cd /usr/lib/python3/dist-packages/odoo/addons
+rm -rf sale_ext
+cp -r /tmp/sale_ext_update/sale_ext ./sale_ext
+chown -R manager:manager sale_ext
+rm -rf /tmp/sale_ext_update
+
+# 3. Dienst neu starten
+systemctl restart odoo
+```
+
+Danach im UI: **Apps → „sale_ext" → ⋮ → Aktualisieren** (lädt die geänderten QWeb-Reports in die DB). Ein reiner Restart genügt für Report-Änderungen **nicht**.
+
 ## Lizenz
 
 AGPL-3
